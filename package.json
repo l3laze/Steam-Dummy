@@ -1,0 +1,17 @@
+{
+  "name": "steam-datadummy",
+  "version": "0.0.1-alpha",
+  "description": "Dummy data for SteamConfig testing.",
+  "main": "index.js",
+  "author": "l3l_aze <l3l_aze@yahoo.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/l3laze/Steam-DataDummy",
+  "dependencies": {},
+  "devDependencies": {
+    "standard": "^10.0.3"
+  },
+  "scripts": {
+    "testm": "mocha test",
+    "test": "yarn standard | snazzy && mocha test"
+  }
+}
