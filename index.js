@@ -5,17 +5,18 @@ const path = require('path')
 
 let dummyPath = path.join('./', 'Dummy')
 let steamID = '107311984'
+let cli = require('cli')
+let options = cli.parse({
+  path: ['p', 'Path to Steam installation.', 'path', null],
+  invalidate: ['i', 'Invalidate some data; for testing error handling.', 'string', null]
+})
 
-function parseArgs () {
-  let args = process.argv.splice(2)
-
-  if (args) {
-    // ...
-  }
+if (options.invalidate !== null) {
+  options.invalidate = options.invalidate.split('')
 }
 
 function run () {
-  parseArgs()
+  console.info(JSON.stringify(options, null, 2))
   let tmp = null
   try {
     if (!fs.existsSync(dummyPath)) {
@@ -31,7 +32,7 @@ function run () {
     if (!fs.existsSync(tmp)) {
       fs.writeFileSync(tmp, '')
     }
-    fs.copyFileSync(path.join('./', 'appcache', 'appinfo.vdf'), tmp)
+    copyThisFile(path.join('./', 'appcache', 'appinfo.vdf'), tmp)
 
     tmp = path.join(dummyPath, 'config')
     if (!fs.existsSync(tmp)) {
@@ -42,13 +43,13 @@ function run () {
     if (!fs.existsSync(tmp)) {
       fs.writeFileSync(tmp, '')
     }
-    fs.copyFileSync(path.join('./', 'config', 'config.vdf'), tmp)
+    copyThisFile(path.join('./', 'config', 'config.vdf'), tmp)
 
     tmp = path.join(dummyPath, 'config', 'loginusers.vdf')
     if (!fs.existsSync(tmp)) {
       fs.writeFileSync(tmp, '')
     }
-    fs.copyFileSync(path.join('./', 'config', 'loginusers.vdf'), tmp)
+    copyThisFile(path.join('./', 'config', 'loginusers.vdf'), tmp)
 
     tmp = path.join(dummyPath, 'userdata')
     if (!fs.existsSync(tmp)) {
@@ -74,24 +75,54 @@ function run () {
     if (!fs.existsSync(tmp)) {
       fs.writeFileSync(tmp, '')
     }
-    fs.copyFileSync(path.join('./', 'userdata', `${steamID}`, '7', 'remote', 'sharedconfig.vdf'), tmp)
+    copyThisFile(path.join('./', 'userdata', `${steamID}`, '7', 'remote', 'sharedconfig.vdf'), tmp)
 
     tmp = path.join(dummyPath, 'userdata', `${steamID}`, 'config')
     if (!fs.existsSync(tmp)) {
-      fs.mkdirSyncSync(tmp)
+      fs.mkdirSync(tmp)
     }
 
     tmp = path.join(dummyPath, 'userdata', `${steamID}`, 'config', 'localconfig.vdf')
     if (!fs.existsSync(tmp)) {
       fs.writeFileSync(tmp, '')
     }
-    fs.copyFileSync(path.join('./', 'userdata', `${steamID}`, 'config', 'localconfig.vdf'), tmp)
+    copyThisFile(path.join('./', 'userdata', `${steamID}`, 'config', 'localconfig.vdf'), tmp)
   } catch (err) {
-    console.error(err)
+    if (err.message.indexOf('ENOENT') !== -1) {
+      console.error(err.message)
+    } else {
+      console.error(err)
+    }
     process.exit(1)
   }
 }
 
-console.info(`Using NodeJS ${process.versions.node}...`)
-
 run()
+
+async function copyThisFile (from, to) {
+  function done (err) {
+    if (err) {
+      throw err
+    }
+  }
+
+  let reader = fs.createReadStream(from)
+  reader.on('error', function (err) {
+    done(err)
+  })
+
+  let writer = fs.createWriteStream(to)
+  writer.on('error', function (err) {
+    done(err)
+  })
+
+  writer.on('close', function (err) {
+    if (err) {
+      done(err)
+    } else {
+      done()
+    }
+  })
+
+  reader.pipe(writer)
+}

@@ -6,7 +6,9 @@
   "author": "l3l_aze <l3l_aze@yahoo.com>",
   "license": "MIT",
   "homepage": "https://github.com/l3laze/Steam-DataDummy",
-  "dependencies": {},
+  "dependencies": {
+    "cli": "^1.0.1"
+  },
   "devDependencies": {
     "standard": "^10.0.3"
   },
