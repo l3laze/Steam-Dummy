@@ -7,17 +7,15 @@ let dummyPath = path.join('./', 'Dummy')
 let steamID = '107311984'
 let cli = require('cli')
 let options = cli.parse({
-  path: ['p', 'Path to Steam installation.', 'path', null],
-  invalidate: ['i', 'Invalidate some data; for testing error handling.', 'string', null]
+  path: ['p', 'Path to create dummy at.', 'path', null]
 })
 
-if (options.invalidate !== null) {
-  options.invalidate = options.invalidate.split('')
-}
-
 function run () {
-  console.info(JSON.stringify(options, null, 2))
   let tmp = null
+
+  console.info(JSON.stringify(options, null, 2))
+  dummyPath = options.path || dummyPath
+
   try {
     if (!fs.existsSync(dummyPath)) {
       fs.mkdirSync(dummyPath)
@@ -97,8 +95,6 @@ function run () {
   }
 }
 
-run()
-
 async function copyThisFile (from, to) {
   function done (err) {
     if (err) {
@@ -126,3 +122,5 @@ async function copyThisFile (from, to) {
 
   reader.pipe(writer)
 }
+
+run()
