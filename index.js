@@ -3,88 +3,102 @@
 const fs = require('fs')
 const path = require('path')
 
-let dummyPath = path.join('./', 'Dummy')
-let steamID = '107311984'
-let cli = require('cli')
-let options = cli.parse({
-  path: ['p', 'Path to create dummy at.', 'path', null]
-})
+function SteamDummy () {
+  this.dummyPath = path.join('./', 'Dummy')
+  this.steamID = '107311984'
+}
 
-function run () {
+SteamDummy.prototype.makeDummy = async function makeDummy (pathToDummy) {
   let tmp = null
 
-  console.info(JSON.stringify(options, null, 2))
-  dummyPath = options.path || dummyPath
+  this.dummyPath = pathToDummy || this.dummyPath
 
   try {
-    if (!fs.existsSync(dummyPath)) {
-      fs.mkdirSync(dummyPath)
+    if (!fs.existsSync(this.dummyPath)) {
+      fs.mkdirSync(this.dummyPath)
     }
 
-    tmp = path.join(dummyPath, 'appcache')
-    if (!fs.existsSync(tmp)) {
-      fs.mkdirSync(tmp)
-    }
-
-    tmp = path.join(dummyPath, 'appcache', 'appinfo.vdf')
+    tmp = path.join(this.dummyPath, 'registry.vdf')
     if (!fs.existsSync(tmp)) {
       fs.writeFileSync(tmp, '')
     }
-    copyThisFile(path.join('./', 'appcache', 'appinfo.vdf'), tmp)
+    await copyThisFile(path.join(__dirname, 'registry.vdf'), tmp)
 
-    tmp = path.join(dummyPath, 'config')
+    tmp = path.join(this.dummyPath, 'steamapps')
     if (!fs.existsSync(tmp)) {
       fs.mkdirSync(tmp)
     }
 
-    tmp = path.join(dummyPath, 'config', 'config.vdf')
+    tmp = path.join(this.dummyPath, 'steamapps', 'libraryfolders.vdf')
     if (!fs.existsSync(tmp)) {
       fs.writeFileSync(tmp, '')
     }
-    copyThisFile(path.join('./', 'config', 'config.vdf'), tmp)
+    await copyThisFile(path.join(__dirname, 'steamapps', 'libraryfolders.vdf'), tmp)
 
-    tmp = path.join(dummyPath, 'config', 'loginusers.vdf')
+    tmp = path.join(this.dummyPath, 'appcache')
+    if (!fs.existsSync(tmp)) {
+      fs.mkdirSync(tmp)
+    }
+
+    tmp = path.join(this.dummyPath, 'appcache', 'appinfo.vdf')
     if (!fs.existsSync(tmp)) {
       fs.writeFileSync(tmp, '')
     }
-    copyThisFile(path.join('./', 'config', 'loginusers.vdf'), tmp)
+    await copyThisFile(path.join(__dirname, 'appcache', 'appinfo.vdf'), tmp)
 
-    tmp = path.join(dummyPath, 'userdata')
+    tmp = path.join(this.dummyPath, 'config')
     if (!fs.existsSync(tmp)) {
       fs.mkdirSync(tmp)
     }
 
-    tmp = path.join(dummyPath, 'userdata', `${steamID}`)
-    if (!fs.existsSync(tmp)) {
-      fs.mkdirSync(tmp)
-    }
-
-    tmp = path.join(dummyPath, 'userdata', `${steamID}`, '7')
-    if (!fs.existsSync(tmp)) {
-      fs.mkdirSync(tmp)
-    }
-
-    tmp = path.join(dummyPath, 'userdata', `${steamID}`, '7', 'remote')
-    if (!fs.existsSync(tmp)) {
-      fs.mkdirSync(tmp)
-    }
-
-    tmp = path.join(dummyPath, 'userdata', `${steamID}`, '7', 'remote', 'sharedconfig.vdf')
+    tmp = path.join(this.dummyPath, 'config', 'config.vdf')
     if (!fs.existsSync(tmp)) {
       fs.writeFileSync(tmp, '')
     }
-    copyThisFile(path.join('./', 'userdata', `${steamID}`, '7', 'remote', 'sharedconfig.vdf'), tmp)
+    await copyThisFile(path.join(__dirname, 'config', 'config.vdf'), tmp)
 
-    tmp = path.join(dummyPath, 'userdata', `${steamID}`, 'config')
+    tmp = path.join(this.dummyPath, 'config', 'loginusers.vdf')
+    if (!fs.existsSync(tmp)) {
+      fs.writeFileSync(tmp, '')
+    }
+    await copyThisFile(path.join(__dirname, 'config', 'loginusers.vdf'), tmp)
+
+    tmp = path.join(this.dummyPath, 'userdata')
     if (!fs.existsSync(tmp)) {
       fs.mkdirSync(tmp)
     }
 
-    tmp = path.join(dummyPath, 'userdata', `${steamID}`, 'config', 'localconfig.vdf')
+    tmp = path.join(this.dummyPath, 'userdata', `${this.steamID}`)
+    if (!fs.existsSync(tmp)) {
+      fs.mkdirSync(tmp)
+    }
+
+    tmp = path.join(this.dummyPath, 'userdata', `${this.steamID}`, '7')
+    if (!fs.existsSync(tmp)) {
+      fs.mkdirSync(tmp)
+    }
+
+    tmp = path.join(this.dummyPath, 'userdata', `${this.steamID}`, '7', 'remote')
+    if (!fs.existsSync(tmp)) {
+      fs.mkdirSync(tmp)
+    }
+
+    tmp = path.join(this.dummyPath, 'userdata', `${this.steamID}`, '7', 'remote', 'sharedconfig.vdf')
     if (!fs.existsSync(tmp)) {
       fs.writeFileSync(tmp, '')
     }
-    copyThisFile(path.join('./', 'userdata', `${steamID}`, 'config', 'localconfig.vdf'), tmp)
+    await copyThisFile(path.join(__dirname, 'userdata', `${this.steamID}`, '7', 'remote', 'sharedconfig.vdf'), tmp)
+
+    tmp = path.join(this.dummyPath, 'userdata', `${this.steamID}`, 'config')
+    if (!fs.existsSync(tmp)) {
+      fs.mkdirSync(tmp)
+    }
+
+    tmp = path.join(this.dummyPath, 'userdata', `${this.steamID}`, 'config', 'localconfig.vdf')
+    if (!fs.existsSync(tmp)) {
+      fs.writeFileSync(tmp, '')
+    }
+    await copyThisFile(path.join(__dirname, 'userdata', `${this.steamID}`, 'config', 'localconfig.vdf'), tmp)
   } catch (err) {
     if (err.message.indexOf('ENOENT') !== -1) {
       console.error(err.message)
@@ -123,4 +137,4 @@ async function copyThisFile (from, to) {
   reader.pipe(writer)
 }
 
-run()
+module.exports = SteamDummy
