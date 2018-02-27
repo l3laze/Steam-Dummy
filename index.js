@@ -99,6 +99,31 @@ SteamDummy.prototype.makeDummy = async function makeDummy (pathToDummy) {
       fs.writeFileSync(tmp, '')
     }
     await copyThisFile(path.join(__dirname, 'userdata', `${this.steamID}`, 'config', 'localconfig.vdf'), tmp)
+
+    tmp = path.join(this.dummyPath, 'Steam.AppBundle')
+    if (!fs.existsSync(tmp)) {
+      fs.mkdirSync(tmp)
+    }
+
+    tmp = path.join(this.dummyPath, 'Steam.AppBundle', 'Steam')
+    if (!fs.existsSync(tmp)) {
+      fs.mkdirSync(tmp)
+    }
+
+    tmp = path.join(this.dummyPath, 'Steam.AppBundle', 'Steam', 'Contents')
+    if (!fs.existsSync(tmp)) {
+      fs.mkdirSync(tmp)
+    }
+
+    tmp = path.join(this.dummyPath, 'Steam.AppBundle', 'Steam', 'Contents', 'MacOS')
+    if (!fs.existsSync(tmp)) {
+      fs.mkdirSync(tmp)
+    }
+
+    tmp = path.join(this.dummyPath, 'Steam.AppBundle', 'Steam', 'Contents', 'MacOS', 'skins')
+    if (!fs.existsSync(tmp)) {
+      fs.mkdirSync(tmp)
+    }
   } catch (err) {
     if (err.message.indexOf('ENOENT') !== -1) {
       console.error(err.message)
