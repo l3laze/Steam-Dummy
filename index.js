@@ -1,165 +1,104 @@
 'use strict'
 
-const fs = require('fs')
+const fs = require('fs-extra')
 const path = require('path')
 
 function SteamDummy () {
   this.dummyPath = path.join('./', 'Dummy')
   this.steamID = '107311984'
+  this.created = []
 }
 
-SteamDummy.prototype.makeDummy = async function makeDummy (pathToDummy) {
+SteamDummy.prototype.makeDummy = function makeDummy (pathToDummy, force = false) {
   let tmp = null
 
   this.dummyPath = pathToDummy || this.dummyPath
 
+  if (!force && fs.existsSync(this.dummyPath)) {
+    return
+  }
+
   try {
     if (!fs.existsSync(this.dummyPath)) {
-      fs.mkdirSync(this.dummyPath)
+      fs.mkdirsSync(this.dummyPath)
     }
 
     tmp = path.join(this.dummyPath, 'registry.vdf')
-    if (!fs.existsSync(tmp)) {
-      fs.writeFileSync(tmp, '')
-    }
-    await copyThisFile(path.join(__dirname, 'registry.vdf'), tmp)
+    fs.copySync(path.join(__dirname, 'registry.vdf'), tmp)
+    this.created.push('registry')
 
     tmp = path.join(this.dummyPath, 'steamapps')
     if (!fs.existsSync(tmp)) {
-      fs.mkdirSync(tmp)
+      fs.mkdirsSync(tmp)
     }
+    this.created.push('steamapps')
 
     tmp = path.join(this.dummyPath, 'steamapps', 'libraryfolders.vdf')
-    if (!fs.existsSync(tmp)) {
-      fs.writeFileSync(tmp, '')
-    }
-    await copyThisFile(path.join(__dirname, 'steamapps', 'libraryfolders.vdf'), tmp)
+    fs.copySync(path.join(__dirname, 'steamapps', 'libraryfolders.vdf'), tmp)
+    this.created.push('libraryfolders')
 
     tmp = path.join(this.dummyPath, 'appcache')
     if (!fs.existsSync(tmp)) {
-      fs.mkdirSync(tmp)
+      fs.mkdirsSync(tmp)
     }
 
     tmp = path.join(this.dummyPath, 'appcache', 'appinfo.vdf')
-    if (!fs.existsSync(tmp)) {
-      fs.writeFileSync(tmp, '')
-    }
-    await copyThisFile(path.join(__dirname, 'appcache', 'appinfo.vdf'), tmp)
+    fs.copySync(path.join(__dirname, 'appcache', 'appinfo.vdf'), tmp)
+    this.created.push('appinfo')
 
     tmp = path.join(this.dummyPath, 'config')
     if (!fs.existsSync(tmp)) {
-      fs.mkdirSync(tmp)
+      fs.mkdirsSync(tmp)
     }
 
     tmp = path.join(this.dummyPath, 'config', 'config.vdf')
-    if (!fs.existsSync(tmp)) {
-      fs.writeFileSync(tmp, '')
-    }
-    await copyThisFile(path.join(__dirname, 'config', 'config.vdf'), tmp)
+    fs.copySync(path.join(__dirname, 'config', 'config.vdf'), tmp)
+    this.created.push('config')
 
     tmp = path.join(this.dummyPath, 'config', 'loginusers.vdf')
-    if (!fs.existsSync(tmp)) {
-      fs.writeFileSync(tmp, '')
-    }
-    await copyThisFile(path.join(__dirname, 'config', 'loginusers.vdf'), tmp)
-
-    tmp = path.join(this.dummyPath, 'userdata')
-    if (!fs.existsSync(tmp)) {
-      fs.mkdirSync(tmp)
-    }
-
-    tmp = path.join(this.dummyPath, 'userdata', `${this.steamID}`)
-    if (!fs.existsSync(tmp)) {
-      fs.mkdirSync(tmp)
-    }
-
-    tmp = path.join(this.dummyPath, 'userdata', `${this.steamID}`, '7')
-    if (!fs.existsSync(tmp)) {
-      fs.mkdirSync(tmp)
-    }
+    fs.copySync(path.join(__dirname, 'config', 'loginusers.vdf'), tmp)
+    this.created.push('loginusers')
 
     tmp = path.join(this.dummyPath, 'userdata', `${this.steamID}`, '7', 'remote')
-    if (!fs.existsSync(tmp)) {
-      fs.mkdirSync(tmp)
-    }
+    fs.mkdirsSync(tmp)
 
     tmp = path.join(this.dummyPath, 'userdata', `${this.steamID}`, '7', 'remote', 'sharedconfig.vdf')
-    if (!fs.existsSync(tmp)) {
-      fs.writeFileSync(tmp, '')
-    }
-    await copyThisFile(path.join(__dirname, 'userdata', `${this.steamID}`, '7', 'remote', 'sharedconfig.vdf'), tmp)
+    fs.copySync(path.join(__dirname, 'userdata', `${this.steamID}`, '7', 'remote', 'sharedconfig.vdf'), tmp)
+    this.created.push('sharedconfig')
 
     tmp = path.join(this.dummyPath, 'userdata', `${this.steamID}`, 'config')
-    if (!fs.existsSync(tmp)) {
-      fs.mkdirSync(tmp)
-    }
+    fs.mkdirsSync(tmp)
 
     tmp = path.join(this.dummyPath, 'userdata', `${this.steamID}`, 'config', 'localconfig.vdf')
-    if (!fs.existsSync(tmp)) {
-      fs.writeFileSync(tmp, '')
-    }
-    await copyThisFile(path.join(__dirname, 'userdata', `${this.steamID}`, 'config', 'localconfig.vdf'), tmp)
+    fs.copySync(path.join(__dirname, 'userdata', `${this.steamID}`, 'config', 'localconfig.vdf'), tmp)
+    this.created.push('localconfig')
 
-    tmp = path.join(this.dummyPath, 'Steam.AppBundle')
-    if (!fs.existsSync(tmp)) {
-      fs.mkdirSync(tmp)
-    }
-
-    tmp = path.join(this.dummyPath, 'Steam.AppBundle', 'Steam')
-    if (!fs.existsSync(tmp)) {
-      fs.mkdirSync(tmp)
-    }
-
-    tmp = path.join(this.dummyPath, 'Steam.AppBundle', 'Steam', 'Contents')
-    if (!fs.existsSync(tmp)) {
-      fs.mkdirSync(tmp)
-    }
-
-    tmp = path.join(this.dummyPath, 'Steam.AppBundle', 'Steam', 'Contents', 'MacOS')
-    if (!fs.existsSync(tmp)) {
-      fs.mkdirSync(tmp)
-    }
+    tmp = path.join(this.dummyPath, 'userdata', `${this.steamID}`, 'config', 'shortcuts.vdf')
+    fs.copySync(path.join(__dirname, 'userdata', `${this.steamID}`, 'config', 'shortcuts.vdf'), tmp)
+    this.created.push('shortcuts')
 
     tmp = path.join(this.dummyPath, 'Steam.AppBundle', 'Steam', 'Contents', 'MacOS', 'skins')
-    if (!fs.existsSync(tmp)) {
-      fs.mkdirSync(tmp)
-    }
+    fs.mkdirsSync(tmp)
+    this.created.push('skins')
+
+    let fp
+
+    let apps = fs.readdirSync(path.join(__dirname, 'steamapps'))
+
+    apps.forEach(async (file) => {
+      try {
+        if (file.indexOf('.acf') !== -1) {
+          fp = path.join(__dirname, 'steamapps', file)
+          fs.copySync(fp, path.join(this.dummyPath, 'steamapps', file))
+        }
+      } catch (err) {
+        throw new Error(err)
+      }
+    })
+    this.created.push('appmanifest')
   } catch (err) {
-    if (err.message.indexOf('ENOENT') !== -1) {
-      console.error(err.message)
-    } else {
-      console.error(err)
-    }
-    process.exit(1)
+    throw new Error(err)
   }
-}
-
-async function copyThisFile (from, to) {
-  function done (err) {
-    if (err) {
-      throw err
-    }
-  }
-
-  let reader = fs.createReadStream(from)
-  reader.on('error', function (err) {
-    done(err)
-  })
-
-  let writer = fs.createWriteStream(to)
-  writer.on('error', function (err) {
-    done(err)
-  })
-
-  writer.on('close', function (err) {
-    if (err) {
-      done(err)
-    } else {
-      done()
-    }
-  })
-
-  reader.pipe(writer)
 }
 
 module.exports = SteamDummy
