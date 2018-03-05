@@ -38,5 +38,6 @@ on_success:
 
 # So code coverage can be uploaded to codacy...which is kinda useless, really.
 environment:
+  nodejs_version: 8
   CODACY_PROJECT_TOKEN:
     secure: sfb/s1DmVMz7rGwZRR9UIm+Xq6Meb74f8Ek2V0lVN2pv7T2z22yNmhlH+5kZ7sPv
