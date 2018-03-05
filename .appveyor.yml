@@ -38,7 +38,7 @@ build_script:
 on_success:
   - yarn textcov
   - yarn codecov
-  - rd /s /q ./coverage && rd /s /q ./coverage.lcov
+  - rd /s /q coverage && del /s /q coverage.lcov
 
 # So code coverage can be uploaded to codacy...which is kinda useless, really.
 environment:
