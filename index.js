@@ -4,6 +4,7 @@ const fs = require('fs-extra')
 const path = require('path')
 const platform = require('os').platform()
 const {Registry} = require('rage-edit')
+const chmodr = require('chmodr')
 
 function SteamDummy () {
   this.dummyPath = path.join('./', 'Dummy')
@@ -46,6 +47,12 @@ SteamDummy.prototype.makeDummy = async function makeDummy (pathToDummy, force = 
     /* istanbul ignore next */
     throw new Error(err)
   }
+
+  chmodr(this.dummyPath, 0o777, function (err) {
+    if (err) {
+      throw err
+    }
+  })
 }
 
 module.exports = SteamDummy
