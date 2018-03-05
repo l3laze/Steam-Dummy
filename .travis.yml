@@ -26,8 +26,7 @@ script:
 after_success:
   - chmod 0755 /Users/travis/build/l3laze/Steam-Dummy/.nyc_output
   - yarn textcov
-  - yarn codecov && yarn codacy
-  - rm -rf ./coverage && rm -f ./coverage.lcov
+  - yarn codecov
 
 notifications:
   email: false
