@@ -1,0 +1,42 @@
+# Build using both 32-bit and 64-bit Windows.
+platform:
+  - x64
+  - x86
+
+# Because of this:
+#   https://help.github.com/articles/dealing-with-line-endings/
+init:
+  - git config --global core.autocrlf input
+
+install:
+  - yarn
+
+# Download repo as a zip file.
+shallow_clone: true
+
+
+# Cache some dirs for faster build.
+cache:
+  - "%LOCALAPPDATA%\\Yarn"
+
+
+# Quiet-ish build.
+build:
+  verbosity: minimal
+
+
+# Run build (tests)
+build_script:
+  - yarn lint
+  - yarn nyc
+
+# After successful build
+on_success:
+  - yarn textcov
+  - yarn codecov && yarn codacy
+  - rd /s /q ./coverage && rd /s /q ./coverage.lcov
+
+# So code coverage can be uploaded to codacy...which is kinda useless, really.
+environment:
+  CODACY_PROJECT_TOKEN:
+    secure: sfb/s1DmVMz7rGwZRR9UIm+Xq6Meb74f8Ek2V0lVN2pv7T2z22yNmhlH+5kZ7sPv
