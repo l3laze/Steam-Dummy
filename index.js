@@ -32,7 +32,7 @@ SteamDummy.prototype.makeDummy = async function makeDummy (pathToDummy, force = 
       case 'win32':
         await fs.copy(path.join(__dirname, 'data', 'Windows'), this.dummyPath)
 
-        fs.unlink(path.join(this.dummyPath, 'registry.vdf'))
+        fs.unlinkSync(path.join(this.dummyPath, 'registry.vdf'))
 
         const winreg = new Registry('HKCU\\Software\\Valve\\Steam')
 
