@@ -50,6 +50,7 @@ SteamDummy.prototype.makeDummy = async function makeDummy (pathToDummy, force = 
 
   chmodr(this.dummyPath, 0o777, function (err) {
     if (err) {
+      /* istanbul ignore next */
       throw err
     }
   })
