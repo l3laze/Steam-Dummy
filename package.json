@@ -27,7 +27,6 @@
     "coverage": "yarn htmlcov && yarn textcov",
     "tandc": "yarn nyc && yarn coverage",
     "codecov": "codecov",
-    "codacy": "cat coverage.lcov | codacy-coverage",
     "jsdock": "jsdock build && jsdock publish",
     "docs": "jsdoc -c .jsdoc.json -R README.md -t ./node_modules/ink-docstrap/template"
   }
