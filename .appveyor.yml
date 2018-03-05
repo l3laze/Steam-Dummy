@@ -17,9 +17,6 @@ install:
   - yarn --version
   - yarn
 
-# Download repo as a zip file.
-shallow_clone: true
-
 
 # Cache some dirs for faster build.
 cache:
