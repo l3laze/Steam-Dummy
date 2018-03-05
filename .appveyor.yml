@@ -10,6 +10,7 @@ init:
 
 install:
   - ps: Install-Product node $env:nodejs_version
+  - npm i -g npm
   - ps: Write-Host "Installing Yarn 1.5.1..."
   - ps: (New-Object Net.WebClient).DownloadFile('https://github.com/yarnpkg/yarn/releases/download/v1.5.1/yarn-1.5.1.msi', "$env:temp\yarn-1.5.1.msi")
   - ps: cmd /c start /wait msiexec.exe /i $env:temp\yarn-1.5.1.msi /quiet
@@ -32,6 +33,7 @@ build:
 
 # Run build (tests)
 build_script:
+  - dir
   - yarn lint
   - yarn nyc
 
