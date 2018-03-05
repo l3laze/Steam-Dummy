@@ -1,0 +1,42 @@
+"UserLocalConfigStore"
+{
+	"friends"
+	{
+		"Notifications_ShowIngame"		"0"
+		"Sounds_PlayIngame"		"0"
+		"Notifications_ShowOnline"		"0"
+		"Sounds_PlayOnline"		"0"
+		"Notifications_ShowMessage"		"1"
+		"Sounds_PlayMessage"		"0"
+		"AutoSignIntoFriends"		"1"
+		"ShowTimeInChatLogCheck"		"0"
+		"AlwaysNewChatWindow"		"0"
+		"Notifications_EventsAndAnnouncements"		"0"
+		"Sounds_EventsAndAnnouncements"		"0"
+		"ChatFlashMode"		"2"
+		"VoiceReceiveVolume"		"0"
+		"PersonaStateDesired"		"1"
+	}
+	"StartupState.Friends"		"0"
+	"News"
+	{
+		"NotifyAvailableGames"		"0"
+	}
+	"HideSharingNotifications"		"0"
+	"system"
+	{
+		"EnableGameOverlay"		"1"
+		"InGameOverlayShortcutKey"		"Shift	KEY_TAB"
+		"InGameOverlayScreenshotNotification"		"1"
+		"InGameOverlayScreenshotPlaySound"		"0"
+		"InGameOverlayScreenshotSaveUncompressed"		"0"
+		"InGameOverlayShowFPSContrast"		"0"
+		"InGameOverlayShowFPSCorner"		"0"
+		"InGameOverlayScreenshotHotKey"		"KEY_F12"
+		"NavUrlBar"		"0"
+		"displayratesasbits"		"0"
+		"UsePushToTalk"		"1"
+		"PushToTalkKey"		"42"
+		"GameOverlayHomePage"		"https://www.google.com"
+	}
+}

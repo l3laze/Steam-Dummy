@@ -1,0 +1,18 @@
+"AppState"
+{
+	"appid"		"421"
+	"name"		"Something 2"
+	"StateFlags"		"512"
+	"installdir"		"something2"
+	"LastUpdated"		"1518059406"
+	"UpdateResult"		"0"
+	"SizeOnDisk"		"0"
+	"BytesToDownload"		"0"
+	"BytesDownloaded"		"0"
+	"AutoUpdateBehavior"		"1"
+	"AllowOtherDownloadsWhileRunning"		"0"
+	"UserConfig"
+	{
+		"language"		"english"
+	}
+}

@@ -1,0 +1,41 @@
+"InstallConfigStore"
+{
+	"Software"
+	{
+		"Valve"
+		{
+			"Steam"
+			{
+				"AutoUpdateWindowEnabled"		"0"
+				"ShaderCacheManager"
+				{
+					"DisableShaderCache"		"1"
+				}
+				"Accounts"
+				{
+					"someusername"
+					{
+						"SteamID"		"76561198067577712"
+					}
+				}
+				"FirstRun"		"1"
+				"SurveyDate"		"2017-06-30"
+				"NoSavePersonalInfo"		"0"
+				"MaxServerBrowserPingsPerMin"		"250"
+				"DownloadThrottleKbps"		"0"
+				"AllowDownloadsDuringGameplay"		"0"
+				"StreamingThrottleEnabled"		"0"
+				"ClientBrowserAuth"		"1"
+				"BaseInstallFolder_1"		""
+				"RecentDownloadRate"		""
+			}
+		}
+	}
+	"Music"
+	{
+		"MusicVolume"		"1"
+		"CrawlSteamInstallFolders"		"0"
+		"PauseOnVoiceChat"		"0"
+		"PlaylistNowPlayingNotification"		"0"
+	}
+}

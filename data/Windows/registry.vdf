@@ -1,0 +1,22 @@
+"Registry"
+{
+	"HKCU"
+	{
+		"Software"
+		{
+			"Valve"
+			{
+				"Steam"
+				{
+					"Apps"
+					{
+          }
+					"AutoLoginUser"		"someusername"
+					"RememberPassword"		"1"
+					"AlreadyRetriedOfflineMode"		"0"
+					"language"		"english"
+				}
+			}
+		}
+	}
+}
