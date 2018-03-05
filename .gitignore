@@ -4,3 +4,9 @@
 node_modules/
 
 Dummy/
+
+\.nyc_output/
+
+coverage/
+
+coverage\.lcov

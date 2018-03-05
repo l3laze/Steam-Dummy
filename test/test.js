@@ -7,9 +7,10 @@ const SteamDummy = require('../index.js')
 const should = require('chai').should() // eslint-disable-line no-unused-vars
 const platform = require('os').platform()
 const arch = require('os').arch()
+const {Registry} = require('rage-edit')
 
 let dummy = new SteamDummy()
-
+let winreg
 let pathTo
 
 describe('SteamConfig', function () {
@@ -38,6 +39,9 @@ describe('SteamConfig', function () {
           fs.existsSync(path.join(pathTo, 'registry.vdf')).should.equal(true)
         } else if (platform === 'win32') {
           fs.existsSync(path.join(pathTo, 'skins', 'readme.txt')).should.equal(true)
+          winreg = new Registry('HKCU\\Software\\Valve\\Steam')
+          let val = await winreg.get('AutoLoginUser')
+          val.should.equal('someusername')
         }
       } catch (err) {
         throw new Error(err)
@@ -68,6 +72,8 @@ describe('SteamConfig', function () {
           fs.existsSync(path.join(pathTo, 'registry.vdf')).should.equal(true)
         } else if (platform === 'win32') {
           fs.existsSync(path.join(pathTo, 'skins', 'readme.txt')).should.equal(true)
+          let val = await winreg.get('AutoLoginUser')
+          val.should.equal('someusername')
         }
       } catch (err) {
         throw new Error(err)
