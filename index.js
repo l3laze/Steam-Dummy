@@ -42,7 +42,7 @@ SteamDummy.prototype.makeDummy = async function makeDummy (pathToDummy, force = 
     }
 
     await fs.copy(path.join(__dirname, 'data', 'External Steam Library Folder'), path.join(this.dummyPath, 'External Steam Library Folder'))
-  } catch (err) {
+  } /* istanbul ignore next */ catch (err) {
     throw new Error(err)
   }
 }
