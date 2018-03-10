@@ -24,7 +24,7 @@ describe('SteamConfig', function () {
         } else if (platform === 'win32') {
           if (arch === 'ia32') {
             pathTo = path.join('C:', 'Program Files', 'Steam')
-          } else if (arch === 'ia64') {
+          } else if (arch === 'x64') {
             pathTo = path.join('C:', 'Program Files (x86)', 'Steam')
           }
         }

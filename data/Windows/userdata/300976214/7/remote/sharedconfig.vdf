@@ -1,0 +1,16 @@
+"UserRoamingConfigStore"
+{
+	"Software"
+	{
+		"Valve"
+		{
+			"Steam"
+			{
+				"Apps"
+				{
+        }
+				"SteamDefaultDialog"		"#app_store"
+			}
+		}
+	}
+}
