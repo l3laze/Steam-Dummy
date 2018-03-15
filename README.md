@@ -1,5 +1,7 @@
 # Steam-Dummy
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/l3laze/Steam-Dummy.svg)](https://greenkeeper.io/)
+
 > Clean, secure, dummy testing data for [Steam-Config](https://github.com/l3laze/SteamConfig) based on [Steam-Data](https://github.com/l3laze/Steam-Data).
 
 [![Travis-CI Build Status](https://travis-ci.org/l3laze/Steam-Dummy.svg?branch=master)](https://travis-ci.org/l3laze/Steam-Dummy?branch=master) [![Build status](https://ci.appveyor.com/api/projects/status/090gn2g4ss544gm4/branch/master?svg=true)](https://ci.appveyor.com/project/l3laze/steam-dummy/branch/master)
