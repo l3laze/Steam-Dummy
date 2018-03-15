@@ -15,11 +15,11 @@ function SteamDummy () {
 SteamDummy.prototype.makeDummy = async function makeDummy (pathToDummy, force = false) {
   this.dummyPath = pathToDummy || this.dummyPath
 
-  if (!force && fs.existsSync(this.dummyPath)) {
-    return
-  }
-
   try {
+    if (!force && fs.existsSync(this.dummyPath)) {
+      return
+    }
+
     switch (platform) {
       case 'darwin':
         await fs.copy(path.join(__dirname, 'data', 'Mac'), this.dummyPath)
@@ -45,7 +45,7 @@ SteamDummy.prototype.makeDummy = async function makeDummy (pathToDummy, force = 
     await fs.copy(path.join(__dirname, 'data', 'External Steam Library Folder'), path.join(this.dummyPath, 'External Steam Library Folder'))
   } catch (err) {
     /* istanbul ignore next */
-    throw new Error(err)
+    throw err
   }
 
   chmodr(this.dummyPath, 0o777, function (err) {
