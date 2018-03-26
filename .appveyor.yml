@@ -32,7 +32,7 @@ build:
 build_script:
   - dir
   - yarn lint
-  - yarn nyc
+  - yarn nyct
 
 # After successful build
 on_success:

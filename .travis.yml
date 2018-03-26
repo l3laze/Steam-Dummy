@@ -14,7 +14,7 @@ before_install:
 
 script:
   - yarn lint
-  - yarn nyc
+  - yarn nyct
 
 after_success:
   - chmod 0755 /home/travis/build/l3laze/Steam-Dummy/.nyc_output
