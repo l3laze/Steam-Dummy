@@ -3,13 +3,12 @@
 
 const fs = require('fs')
 const path = require('path')
-const SteamDummy = require('../index.js')
+const makeDummy = require('../index.js')
 const should = require('chai').should() // eslint-disable-line no-unused-vars
 const platform = require('os').platform()
 const arch = require('os').arch()
 const {Registry} = require('rage-edit')
 
-let dummy = new SteamDummy()
 let winreg
 let pathTo
 
@@ -37,7 +36,7 @@ describe('SteamDummy', function () {
       this.timeout(4000)
 
       try {
-        await dummy.makeDummy(pathTo)
+        await makeDummy(pathTo)
 
         if (platform === 'linux' || platform === 'darwin') {
           fs.existsSync(path.join(pathTo, 'registry.vdf')).should.equal(true)
@@ -56,7 +55,7 @@ describe('SteamDummy', function () {
       this.timeout(4000)
 
       try {
-        await dummy.makeDummy(pathTo, true)
+        await makeDummy(pathTo, true)
 
         if (platform === 'linux' || platform === 'darwin') {
           fs.existsSync(path.join(pathTo, 'registry.vdf')).should.equal(true)

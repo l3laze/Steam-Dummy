@@ -6,17 +6,11 @@ const platform = require('os').platform()
 const {Registry} = require('rage-edit')
 const chmodrAsync = require('util').promisify(require('chmodr'))
 
-function SteamDummy (pathTo) {
-  this.dummyPath = path.join('./', 'Dummy')
-  this.steamID = '107311984'
-  this.created = []
-}
-
-SteamDummy.prototype.makeDummy = async function makeDummy (pathToDummy, force = false) {
-  this.dummyPath = pathToDummy || this.dummyPath
+async function makeDummy (pathToDummy, force = false) {
+  const dummyPath = pathToDummy || path.join(__dirname, 'Dummy')
 
   try {
-    if (!force && await fse.exists(this.dummyPath)) {
+    if (!force && await fse.exists(dummyPath)) {
       return
     }
 
@@ -26,17 +20,17 @@ SteamDummy.prototype.makeDummy = async function makeDummy (pathToDummy, force = 
 
     switch (platform) {
       case 'darwin':
-        await fse.copy(path.join(__dirname, 'data', 'Mac'), this.dummyPath, opts)
+        await fse.copy(path.join(__dirname, 'data', 'Mac'), dummyPath, opts)
         break
 
       case 'linux':
-        await fse.copy(path.join(__dirname, 'data', 'Linux'), this.dummyPath, opts)
+        await fse.copy(path.join(__dirname, 'data', 'Linux'), dummyPath, opts)
         break
 
       case 'win32':
-        await fse.copy(path.join(__dirname, 'data', 'Windows'), this.dummyPath, opts)
+        await fse.copy(path.join(__dirname, 'data', 'Windows'), dummyPath, opts)
 
-        await fse.unlink(path.join(this.dummyPath, 'registry.vdf'))
+        await fse.unlink(path.join(dummyPath, 'registry.vdf'))
 
         const winreg = new Registry('HKCU\\Software\\Valve\\Steam')
 
@@ -46,13 +40,13 @@ SteamDummy.prototype.makeDummy = async function makeDummy (pathToDummy, force = 
         await winreg.set('SkinV4', 'Some Skin')
     }
 
-    await fse.copy(path.join(__dirname, 'data', 'External Steam Library Folder'), path.join(this.dummyPath, 'External Steam Library Folder'), opts)
+    await fse.copy(path.join(__dirname, 'data', 'External Steam Library Folder'), path.join(dummyPath, 'External Steam Library Folder'), opts)
 
-    await chmodrAsync(this.dummyPath, 0o777)
+    await chmodrAsync(dummyPath, 0o777)
   } catch (err) {
     /* istanbul ignore next */
     throw err
   }
 }
 
-module.exports = SteamDummy
+module.exports = makeDummy

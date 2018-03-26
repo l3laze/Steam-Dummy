@@ -10,3 +10,5 @@ Dummy/
 coverage/
 
 coverage\.lcov
+
+yarn-error\.log
