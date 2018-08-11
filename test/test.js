@@ -36,6 +36,16 @@ describe('SteamDummy', function () {
       this.timeout(4000)
 
       try {
+        if (process.env.CI === true) {
+          if (platform === 'linux' || platform === 'darwin' || platform === 'android') {
+            fs.mkdirSync(path.join(pathTo))
+            fs.writeFileSync(path.join(pathTo, 'registry.vdf'), 'Hello, world!')
+          } else if (platform === 'win32') {
+            winreg = new Registry('HKCU\\Software\\Valve\\Steam')
+            await winreg.set('AutoLoginUser', 'someusername')
+          }
+        }
+
         await makeDummy(pathTo)
 
         if (platform === 'linux' || platform === 'darwin' || platform === 'android') {
@@ -47,7 +57,9 @@ describe('SteamDummy', function () {
           val.should.equal('someusername')
         }
       } catch (err) {
-        throw err
+        if (process.env.CI === false) {
+          throw err
+        }
       }
     })
 
@@ -66,7 +78,7 @@ describe('SteamDummy', function () {
           val.should.equal('someusername')
         }
       } catch (err) {
-        throw new Error(err)
+        throw err
       }
     })
   })

@@ -24,6 +24,7 @@
   "dependencies": {
     "cross-env": "^5.2.0",
     "ebug": "^1.0.0-rc3",
+    "fs-extra": "^7.0.0",
     "rage-edit": "^1.0.2"
   },
   "scripts": {
