@@ -10,7 +10,7 @@
 				{
 					"Apps"
 					{
-          }
+					}
 					"AutoLoginUser"		"someusername"
 					"RememberPassword"		"1"
 					"AlreadyRetriedOfflineMode"		"0"

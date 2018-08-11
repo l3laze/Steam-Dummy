@@ -1,87 +1,125 @@
 'use strict'
 
-const fs = require('fs')
+const util = require('util')
 const afs = {
-  exists: fs.exists, // eslint-disable-line
-  lstat: fs.lstat,
-  mkdir: fs.mkdir,
-  readdir: fs.readdir,
-  copyFile: fs.copyFile,
-  chmod: fs.chmod,
-  unlink: fs.unlink
+  exists: util.promisify(require('fs').exists), // eslint-disable-line
+  lstat: util.promisify(require('fs').lstat),
+  mkdir: util.promisify(require('fs').mkdir),
+  readdir: util.promisify(require('fs').readdir),
+  readFile: util.promisify(require('fs').readFile),
+  writeFile: util.promisify(require('fs').writeFile),
+  chmod: util.promisify(require('fs').chmod),
+  unlink: util.promisify(require('fs').unlink)
 }
 const path = require('path')
 const platform = require('os').platform()
 const {Registry} = require('rage-edit')
+
+const debug = (process.env.CI !== true ? require('ebug')('Steam-Dummy') : console.log)
 
 /*
  * Based on some of the answers from this SO qusetion
  * https://stackoverflow.com/questions/13786160/copy-folder-recursively-in-node-js
  * along with this answer to another question https://stackoverflow.com/a/40686853/7665043
  */
-async function copyRecursive (src, dest, options = {chmod: null}) {
+async function copyRecursive (src, dest, options = {chmodF: undefined, chmodD: undefined}) {
   try {
     const exists = await afs.exists(src)
-    const isDir = exists && await afs.lstat(src).isDirectory()
+    const stats = exists ? await afs.lstat(src) : {}
+    const isDir = exists ? await stats.isDirectory() : false
+    let destName
 
     if (exists && isDir) {
       try {
-        await afs.mkdir(dest)
+        await afs.mkdir(dest, options.chmodD)
       } catch (err) {
-        if (err.code !== 'EEXIST') {
-          throw err
+        if (err.code === 'EEXIST') {
+          // Ignore it..
         }
 
         if (err.code === 'ENOENT') {
           throw new Error(`EACCES: permision denied, mkdir ${dest}`)
         }
 
-        const caught = [ 'EACCES', 'EPERM', 'EISDIR' ] > -1
+        const caught = [ 'EACCES', 'EPERM', 'EISDIR', 'EEXIST' ].indexOf(err.code) > -1
 
         if (!caught) {
           throw err
         }
       }
 
-      await Promise.all(
-        afs.readdir(src).map(async (child) => {
-          const result = await copyRecursive(path.join(src, child), path.join(dest, child), options)
-          return result
-        })
-      )
+      destName = path.dirname(dest)
+
+      debug('Copying src -> %s to dest -> %s', path.basename(src), destName.substring(destName.lastIndexOf(path.sep) + 1))
+
+      const contents = await afs.readdir(src)
+      let child
+
+      debug('Contents: %s', contents.join(', '))
+
+      for (child of contents) {
+        await child
+        await copyRecursive(path.join(src, child), path.join(dest, child), options)
+      }
     } else {
-      await afs.copyFile(src, dest)
-      typeof options.chmod === 'number' ? await afs.chmod(dest, options.chmod) : (function noOp () {})()
+      if (typeof options.chmodD === 'number') {
+        await afs.chmod(dest, options.chmodD)
+      }
+
+      destName = path.dirname(dest)
+
+      debug('Copying src -> %s to dest -> %s', path.basename(src), destName.substring(destName.lastIndexOf(path.sep) + 1))
+      await afs.writeFile(src, await afs.readFile(dest), { flags: 'w' })
+
+      if (typeof options.chmodF === 'number') {
+        await afs.chmod(dest, options.chmodF)
+      }
     }
   } catch (err) {
-    console.error(err)
+    throw err
   }
 }
 
-async function makeDummy (pathToDummy, force = false) {
-  const dummyPath = pathToDummy || path.join(__dirname, 'Dummy')
+async function makeDummy (dummyPath = path.join(__dirname, 'Dummy'), opts = { force: false }) {
+  debug('\n\tdummyPath: %s\n\tforce: %s', dummyPath, opts.force)
 
   try {
-    if (!force && await afs.exists(dummyPath)) {
+    if (!opts.force && await afs.exists(dummyPath)) {
       return
     }
 
     const options = {
-      overwrite: true,
-      chmod: 0o777
+      overwrite: opts.force,
+      chmodF: 0o660,
+      chmodD: 0o770
     }
+
+    debug('Creating dummy')
+
+    if (await afs.exists(dummyPath) === false) {
+      await afs.mkdir(dummyPath, options.chmodD)
+    }
+
+    let creatingPath
 
     switch (platform) {
       case 'darwin':
-        await copyRecursive(path.join(__dirname, 'data', 'Mac'), dummyPath, options)
+        creatingPath = path.join(__dirname, 'data', 'Mac')
+        debug('\n\tsource: %s\n\tdest: %s', creatingPath, dummyPath)
+        await copyRecursive(creatingPath, dummyPath, options)
         break
 
       case 'linux':
-        await copyRecursive(path.join(__dirname, 'data', 'Linux'), dummyPath, options)
+      case 'android':
+        creatingPath = path.join(__dirname, 'data', 'Linux')
+        debug('\n\tsource: %s\n\tdest: %s', creatingPath, dummyPath)
+        await copyRecursive(creatingPath, dummyPath, options)
         break
 
       case 'win32':
-        await copyRecursive(path.join(__dirname, 'data', 'Windows'), dummyPath, options)
+        creatingPath = path.join(__dirname, 'data', 'Windows')
+        debug('\n\tsource: %s\n\tdest: %s', creatingPath, dummyPath)
+        await copyRecursive(creatingPath, dummyPath, options)
 
         await afs.unlink(path.join(dummyPath, 'registry.vdf'))
 
@@ -93,9 +131,9 @@ async function makeDummy (pathToDummy, force = false) {
         await winreg.set('SkinV4', 'Some Skin')
     }
 
-    await copyRecursive(path.join(__dirname, 'data', 'External Steam Library Folder'), path.join(dummyPath, 'External Steam Library Folder'), options)
+    debug('Created dummy for %s', platform)
 
-    await afs.chmod(dummyPath, 0o777)
+    await copyRecursive(path.join(__dirname, 'data', 'External Steam Library Folder'), path.join(dummyPath, 'External Steam Library Folder'), options)
   } catch (err) {
     /* istanbul ignore next */
     throw err
