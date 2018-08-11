@@ -22,8 +22,6 @@
     "standard": "^11.0.1"
   },
   "dependencies": {
-    "chmodr": "^1.0.2",
-    "fs-extra": "^5.0.0",
     "rage-edit": "^1.0.2"
   },
   "scripts": {
