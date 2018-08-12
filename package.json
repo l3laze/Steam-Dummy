@@ -1,6 +1,6 @@
 {
   "name": "steam-dummy",
-  "version": "0.0.7-rc7",
+  "version": "1.0.0-rc0",
   "description": "Dummy data for testing SteamConfig.",
   "main": "index.js",
   "author": "l3l_aze <l3l_aze@yahoo.com>",
@@ -22,14 +22,17 @@
     "standard": "^11.0.1"
   },
   "dependencies": {
-    "chmodr": "^1.0.2",
-    "fs-extra": "^5.0.0",
+    "cross-env": "^5.2.0",
+    "ebug": "^1.0.0-rc3",
+    "fs-extra": "^7.0.0",
     "rage-edit": "^1.0.2"
   },
   "scripts": {
     "lint": "yarn standard",
     "test": "mocha",
+    "debug": "cross-env DEBUG=Steam* mocha",
     "nyct": "nyc mocha",
+    "nyctd": "cross-env DEBUG=Steam* nyc mocha",
     "htmlcov": "nyc report --reporter=html",
     "textcov": "nyc report --reporter=text-lcov > coverage.lcov",
     "coverage": "yarn htmlcov && yarn textcov",
