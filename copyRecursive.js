@@ -62,7 +62,7 @@ async function copyRecursive (src, dest) {
       destName = path.dirname(dest)
 
       debug('Copying src -> %s to dest -> %s', path.basename(src), destName.substring(destName.lastIndexOf(path.sep) + 1))
-      await afs.copyFile(src, dest) // , stats.mode)
+      await afs.copy(src, dest) // , stats.mode)
 
       if (typeof chmodFlag === 'number') {
         await afs.chmod(dest, stats.mode)

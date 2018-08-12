@@ -5,9 +5,7 @@ const path = require('path')
 const platform = require('os').platform()
 const {Registry} = require('rage-edit')
 const afs = require('./afs.js')
-const { copy } = require('./copyRecursive.js')
-
-debug('afs-index: ', afs)
+// const { copy } = require('./copyRecursive.js')
 
 async function makeDummy (dummyPath = path.join(__dirname, 'Dummy'), opts = { force: false }) {
   debug('\n\tdummyPath: %s\n\tforce: %s', dummyPath, opts.force)
@@ -36,7 +34,7 @@ async function makeDummy (dummyPath = path.join(__dirname, 'Dummy'), opts = { fo
           creatingPath = path.join(__dirname, 'data', 'Mac')
           debug('\n\tsource: %s\n\tdest: %s', creatingPath, dummyPath)
           // await copyRecursive(creatingPath, dummyPath, options)
-          await copy(creatingPath, dummyPath, { overwrite: true })
+          await afs.copy(creatingPath, dummyPath, { overwrite: true })
           break
 
         case 'linux':
@@ -44,14 +42,14 @@ async function makeDummy (dummyPath = path.join(__dirname, 'Dummy'), opts = { fo
           creatingPath = path.join(__dirname, 'data', 'Linux')
           debug('\n\tsource: %s\n\tdest: %s', creatingPath, dummyPath)
           // await copyRecursive(creatingPath, dummyPath, options)
-          await copy(creatingPath, dummyPath, { overwrite: true })
+          await afs.copy(creatingPath, dummyPath, { overwrite: true })
           break
 
         case 'win32':
           creatingPath = path.join(__dirname, 'data', 'Windows')
           debug('\n\tsource: %s\n\tdest: %s', creatingPath, dummyPath)
           // await copyRecursive(creatingPath, dummyPath, options)
-          await copy(creatingPath, dummyPath, { overwrite: true })
+          await afs.copy(creatingPath, dummyPath, { overwrite: true })
 
           await afs.delete(path.join(dummyPath, 'registry.vdf'))
 
@@ -63,7 +61,7 @@ async function makeDummy (dummyPath = path.join(__dirname, 'Dummy'), opts = { fo
           await winreg.set('SkinV4', 'Some Skin')
       }
 
-      await copy(
+      await afs.copy(
         path.join(__dirname, 'data', 'External Steam Library Folder'),
         path.join(dummyPath, 'External Steam Library Folder'),
         { overwrit: true }
