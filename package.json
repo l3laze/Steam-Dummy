@@ -1,6 +1,6 @@
 {
   "name": "steam-dummy",
-  "version": "1.0.0-rc5",
+  "version": "1.0.0-rc6",
   "description": "Dummy data for testing SteamConfig.",
   "main": "src/index.js",
   "author": "l3l_aze <l3l_aze@yahoo.com>",
