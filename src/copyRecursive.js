@@ -4,7 +4,7 @@ const debug = (process.env.CI !== true ? require('ebug')('Steam-Dummy-cp-r') : c
 const path = require('path')
 const afs = require('./afs.js')
 
-debug('SD-cp-r: ', afs)
+debug('Steam-Dummy-cp-r: ', afs)
 
 /*
  * Based on some of the answers from this SO qusetion

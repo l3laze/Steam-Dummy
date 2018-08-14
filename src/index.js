@@ -7,6 +7,8 @@ const {Registry} = require('rage-edit')
 const afs = require('./afs.js')
 // const { copy } = require('./copyRecursive.js')
 
+const dataPath = path.join(__dirname, '..', 'data')
+
 async function makeDummy (dummyPath = path.join(__dirname, 'Dummy'), opts = { force: false }) {
   debug('\n\tdummyPath: %s\n\tforce: %s', dummyPath, opts.force)
 
@@ -31,7 +33,7 @@ async function makeDummy (dummyPath = path.join(__dirname, 'Dummy'), opts = { fo
 
       switch (platform) {
         case 'darwin':
-          creatingPath = path.join(__dirname, 'data', 'Mac')
+          creatingPath = path.join(dataPath, 'Mac')
           debug('\n\tsource: %s\n\tdest: %s', creatingPath, dummyPath)
           // await copyRecursive(creatingPath, dummyPath, options)
           await afs.copy(creatingPath, dummyPath, { overwrite: true })
@@ -39,14 +41,14 @@ async function makeDummy (dummyPath = path.join(__dirname, 'Dummy'), opts = { fo
 
         case 'linux':
         case 'android':
-          creatingPath = path.join(__dirname, 'data', 'Linux')
+          creatingPath = path.join(dataPath, 'Linux')
           debug('\n\tsource: %s\n\tdest: %s', creatingPath, dummyPath)
           // await copyRecursive(creatingPath, dummyPath, options)
           await afs.copy(creatingPath, dummyPath, { overwrite: true })
           break
 
         case 'win32':
-          creatingPath = path.join(__dirname, 'data', 'Windows')
+          creatingPath = path.join(dataPath, 'Windows')
           debug('\n\tsource: %s\n\tdest: %s', creatingPath, dummyPath)
           // await copyRecursive(creatingPath, dummyPath, options)
           await afs.copy(creatingPath, dummyPath, { overwrite: true })
@@ -62,7 +64,7 @@ async function makeDummy (dummyPath = path.join(__dirname, 'Dummy'), opts = { fo
       }
 
       await afs.copy(
-        path.join(__dirname, 'data', 'External Steam Library Folder'),
+        path.join(dataPath, 'External Steam Library Folder'),
         path.join(dummyPath, 'External Steam Library Folder'),
         { overwrit: true }
       )

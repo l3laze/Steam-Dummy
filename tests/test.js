@@ -3,7 +3,7 @@
 
 const fs = require('fs')
 const path = require('path')
-const makeDummy = require('../index.js')
+const makeDummy = require('./../src/index.js')
 const should = require('chai').should() // eslint-disable-line no-unused-vars
 const platform = require('os').platform()
 const arch = require('os').arch()
