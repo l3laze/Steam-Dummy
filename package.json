@@ -1,8 +1,8 @@
 {
   "name": "steam-dummy",
-  "version": "1.0.0-rc4",
+  "version": "1.0.0-rc5",
   "description": "Dummy data for testing SteamConfig.",
-  "main": "./src/index.js",
+  "main": "src/index.js",
   "author": "l3l_aze <l3l_aze@yahoo.com>",
   "license": "MIT",
   "homepage": "https://github.com/l3laze/Steam-Dummy",
@@ -11,8 +11,8 @@
     "url": "https://github.com/l3laze/Steam-Dummy.git"
   },
   "files": [
-    "./src/*.js",
-    "./data/**/*"
+    "src/*.*",
+    "data/**/*"
   ],
   "bugs": {
     "url": "https://github.com/l3laze/Steam-Dummy/issues"
