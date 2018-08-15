@@ -4,9 +4,10 @@
 const fs = require('fs')
 const path = require('path')
 const makeDummy = require('./../src/index.js')
+const { winArch } = require('./../src/winArch.js')
 const should = require('chai').should() // eslint-disable-line no-unused-vars
 const platform = require('os').platform()
-const arch = require('os').arch()
+const arch = platform === 'win32' ? winArch() : require('os').arch()
 const {Registry} = require('rage-edit')
 
 let winreg
