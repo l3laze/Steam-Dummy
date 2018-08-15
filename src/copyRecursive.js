@@ -49,7 +49,7 @@ async function copyRecursive (src, dest) {
       debug('Contents: %s', contents.join(', '))
 
       contents = contents.map((child) => copyRecursive(path.join(src, child), path.join(dest, child)))
-      
+
       await Promise.all(contents)
     } else if (isNotGarbage) {
       destName = path.dirname(dest)
@@ -60,7 +60,7 @@ async function copyRecursive (src, dest) {
       if (typeof stats.mode === 'number') {
         await afs.chmod(dest, stats.mode)
       }
-      
+
       if (typeof stats.uid === 'number' && typeof stats.gid === 'number') {
         await afs.chown(dest, stats.uid, stats.gid)
       }
