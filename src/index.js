@@ -5,7 +5,7 @@ const path = require('path')
 const platform = require('os').platform()
 const {Registry} = require('rage-edit')
 const afs = require('./afs.js')
-// const { copy } = require('./copyRecursive.js')
+const { copy } = require('./copyRecursive.js')
 
 const dataPath = path.join(__dirname, '..', 'data')
 
@@ -25,7 +25,6 @@ async function makeDummy (dummyPath = path.join(__dirname, 'Dummy'), opts = { fo
       debug('Creating dummy')
 
       if (await afs.exists(dummyPath) === false) {
-        // await afs.chmod(path.dirname(dummyPath).substring(path.dirname(dummyPath).lastIndexOf(path.sep)), options.chmodD)
         await afs.mkdir(dummyPath)
       }
 
@@ -36,7 +35,7 @@ async function makeDummy (dummyPath = path.join(__dirname, 'Dummy'), opts = { fo
           creatingPath = path.join(dataPath, 'Mac')
           debug('\n\tsource: %s\n\tdest: %s', creatingPath, dummyPath)
           // await copyRecursive(creatingPath, dummyPath, options)
-          await afs.copy(creatingPath, dummyPath, { overwrite: true })
+          await copy(creatingPath, dummyPath)
           break
 
         case 'linux':
@@ -44,14 +43,14 @@ async function makeDummy (dummyPath = path.join(__dirname, 'Dummy'), opts = { fo
           creatingPath = path.join(dataPath, 'Linux')
           debug('\n\tsource: %s\n\tdest: %s', creatingPath, dummyPath)
           // await copyRecursive(creatingPath, dummyPath, options)
-          await afs.copy(creatingPath, dummyPath, { overwrite: true })
+          await copy(creatingPath, dummyPath)
           break
 
         case 'win32':
           creatingPath = path.join(dataPath, 'Windows')
           debug('\n\tsource: %s\n\tdest: %s', creatingPath, dummyPath)
           // await copyRecursive(creatingPath, dummyPath, options)
-          await afs.copy(creatingPath, dummyPath, { overwrite: true })
+          await copy(creatingPath, dummyPath)
 
           await afs.delete(path.join(dummyPath, 'registry.vdf'))
 
@@ -63,10 +62,9 @@ async function makeDummy (dummyPath = path.join(__dirname, 'Dummy'), opts = { fo
           await winreg.set('SkinV4', 'Some Skin')
       }
 
-      await afs.copy(
+      await copy(
         path.join(dataPath, 'External Steam Library Folder'),
-        path.join(dummyPath, 'External Steam Library Folder'),
-        { overwrit: true }
+        path.join(dummyPath, 'External Steam Library Folder')
       )
 
       debug('Created dummy for %s', platform)
