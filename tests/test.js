@@ -12,10 +12,10 @@ const {Registry} = require('rage-edit')
 let winreg
 let pathTo
 
-if (process.env.CI === true) {
+if (process.env.CI !== 'undefined') {
   if (platform === 'darwin') {
     pathTo = path.join(require('os').homedir(), 'Library', 'Application Support', 'Steam')
-  } else if (platform === 'linux') {
+  } else if (platform === 'linux' || platform === 'android') {
     pathTo = path.join(require('os').homedir(), '.steam')
   } else if (platform === 'win32') {
     if (arch === 'ia32') {
@@ -36,7 +36,7 @@ describe('SteamDummy', function () {
       this.timeout(4000)
 
       try {
-        if (process.env.CI === true) {
+        if (typeof process.env.CI !== 'undefined') {
           if (platform === 'linux' || platform === 'darwin' || platform === 'android') {
             fs.mkdirSync(path.join(pathTo))
             fs.writeFileSync(path.join(pathTo, 'registry.vdf'), 'Hello, world!')
@@ -77,6 +77,8 @@ describe('SteamDummy', function () {
           let val = await winreg.get('AutoLoginUser')
           val.should.equal('someusername')
         }
+
+        console.info(fs.readdirSync(pathTo))
       } catch (err) {
         throw err
       }

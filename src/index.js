@@ -1,6 +1,6 @@
 'use strict'
 
-const debug = (process.env.CI !== true ? require('ebug')('Steam-Dummy') : console.log)
+const debug = (process.env.CI !== 'undefined' ? require('ebug')('Steam-Dummy') : console.log)
 const path = require('path')
 const platform = require('os').platform()
 const {Registry} = require('rage-edit')
