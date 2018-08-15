@@ -12,7 +12,7 @@ const {Registry} = require('rage-edit')
 let winreg
 let pathTo
 
-if (process.env.CI !== 'undefined') {
+if (typeof process.env.CI !== 'undefined') {
   if (platform === 'darwin') {
     pathTo = path.join(require('os').homedir(), 'Library', 'Application Support', 'Steam')
   } else if (platform === 'linux' || platform === 'android') {
@@ -77,10 +77,46 @@ describe('SteamDummy', function () {
           let val = await winreg.get('AutoLoginUser')
           val.should.equal('someusername')
         }
-
-        console.info(fs.readdirSync(pathTo))
       } catch (err) {
         throw err
+      }
+    })
+
+    it('should have created a dummy by now', function didMakeDummy () {
+      this.timeout(1000)
+
+      try {
+        const contents = fs.readdirSync(pathTo)
+
+        if (platform === 'darwin') {
+          contents.should.include.members([
+            'External Steam Library Folder',
+            'Steam.AppBundle',
+            'appcache',
+            'config',
+            'registry.vdf',
+            'steamapps',
+            'userdata'
+          ])
+        } else if (platform === 'linux' || platform === 'android') {
+          contents.should.include.members([
+            'External Steam Library Folder',
+            'registry.vdf',
+            'skins',
+            'steam'
+          ])
+        } else if (platform === 'win32') {
+          contents.should.include.members([
+            'External Steam Library Folder',
+            'appcache',
+            'config',
+            'skins',
+            'steamapps',
+            'userdata'
+          ])
+        }
+      } catch (err) {
+        console.error(err)
       }
     })
   })
