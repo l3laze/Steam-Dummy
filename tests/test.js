@@ -20,9 +20,9 @@ if (typeof process.env.CI !== 'undefined') {
   } else if (platform === 'linux' || platform === 'android') {
     pathTo = path.join(require('os').homedir(), '.steam')
   } else if (platform === 'win32') {
-    if (warch === 'ia32') {
+    if (warch === 'ia32' && arch === 'ia32') {
       pathTo = path.join('C:', 'Program Files', 'Steam')
-    } else if (warch === 'ia64') {
+    } else {
       pathTo = path.join('C:', 'Program Files (x86)', 'Steam')
     }
   }
@@ -73,6 +73,7 @@ describe('SteamDummy', function () {
           fs.existsSync(path.join(pathTo, 'registry.vdf')).should.equal(true)
         } else if (platform === 'win32') {
           fs.existsSync(path.join(pathTo, 'skins', 'readme.txt')).should.equal(true)
+
           winreg = new Registry('HKCU\\Software\\Valve\\Steam')
           let val = await winreg.get('AutoLoginUser')
           val.should.equal('someusername')
@@ -82,7 +83,7 @@ describe('SteamDummy', function () {
       }
     })
 
-    it(`should have created a dummy for ${platform} ${arch} ${warch !== '' ? '(' + warch + ')' : ''}`, function didMakeDummy () {
+    it(`should have created a dummy for ${platform} ${arch} | ${warch !== '' ? '(' + warch + ')' : ''}`, function didMakeDummy () {
       this.timeout(1000)
 
       try {
