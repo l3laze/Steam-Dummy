@@ -6,7 +6,7 @@ module.exports = {
   winArch: function () {
     try {
       const stats = lstatSync('C:\\Program Files (x86)')
-      if (typeof stats.uid !== 'undefined') {
+      if (typeof stats !== 'undefined' && stats.isDirectory() && stats.isFile()) {
         return 'ia64'
       } else {
         return 'ia32'
