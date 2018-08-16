@@ -83,9 +83,7 @@ describe('SteamDummy', function () {
       }
     })
 
-    it(`should have created a dummy for ${platform} ${arch} | ${warch !== '' ? '(' + warch + ')' : ''}`, function didMakeDummy () {
-      this.timeout(1000)
-
+    it(`should have created a dummy for ${platform} ${arch} - ${warch !== '' ? '(' + warch + ')' : ''}`, function didMakeDummy () {
       try {
         const contents = fs.readdirSync(pathTo)
 
