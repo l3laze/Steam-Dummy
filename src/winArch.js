@@ -7,6 +7,8 @@ module.exports = {
     try {
       if (statSync('C:\\Program Files (x86)')) {
         return 'ia64'
+      } else {
+        return 'ia32'
       }
     } catch (err) {
       return 'ia32'
