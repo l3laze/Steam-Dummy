@@ -7,7 +7,8 @@ const makeDummy = require('./../src/index.js')
 const { winArch } = require('./../src/winArch.js')
 const should = require('chai').should() // eslint-disable-line no-unused-vars
 const platform = require('os').platform()
-const arch = platform === 'win32' ? winArch() : require('os').arch()
+const arch = require('os').arch()
+const warch = platform === 'win32' ? winArch() : ''
 const {Registry} = require('rage-edit')
 
 let winreg
@@ -83,7 +84,7 @@ describe('SteamDummy', function () {
       }
     })
 
-    it('should have created a dummy by now', function didMakeDummy () {
+    it(`should have created a dummy for ${platform} ${arch} ${warch !== '' ? '(' + warch + ')' : ''}`, function didMakeDummy () {
       this.timeout(1000)
 
       try {
