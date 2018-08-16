@@ -4,11 +4,9 @@
 const fs = require('fs')
 const path = require('path')
 const makeDummy = require('./../src/index.js')
-const { winArch } = require('./../src/winArch.js')
 const should = require('chai').should() // eslint-disable-line no-unused-vars
 const platform = require('os').platform()
 const arch = require('os').arch()
-const warch = platform === 'win32' ? winArch() : ''
 const {Registry} = require('rage-edit')
 
 let winreg
@@ -20,7 +18,7 @@ if (typeof process.env.CI !== 'undefined') {
   } else if (platform === 'linux' || platform === 'android') {
     pathTo = path.join(require('os').homedir(), '.steam')
   } else if (platform === 'win32') {
-    if (warch === 'ia32' && arch === 'ia32') {
+    if (arch === 'ia32') {
       pathTo = path.join('C:', 'Program Files', 'Steam')
     } else {
       pathTo = path.join('C:', 'Program Files (x86)', 'Steam')
@@ -83,7 +81,7 @@ describe('SteamDummy', function () {
       }
     })
 
-    it(`should have created a dummy for ${platform} ${arch} - ${warch !== '' ? '(' + warch + ')' : ''}`, function didMakeDummy () {
+    it(`should have created a dummy for ${platform} ${arch}`, function didMakeDummy () {
       try {
         const contents = fs.readdirSync(pathTo)
 
