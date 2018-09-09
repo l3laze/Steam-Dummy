@@ -1,0 +1,7 @@
+config root/steam/config/config.vdf
+libraryfolders root/steam/steamapps/libraryfolders.vdf
+localconfig root/steam/userdata/accountid/config/localconfig.vdf
+loginusers root/steam/config/loginusers.vdf
+registry root/registry.vdf
+sharedconfig root/steam/userdata/accountid/7/remote/sharedconfig.vdf
+shortcuts root/steam/userdata/accountid/config/shortcuts.vdf

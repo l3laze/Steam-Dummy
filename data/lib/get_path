@@ -1,0 +1,57 @@
+. "./lib/__dirname"
+. "./lib/abs_path"
+
+function get_path () {
+  local name="$1"
+  local root="$(abs_path $2)"
+  local accountid="$3"
+  local isuserdata=0
+  local platform=$(get_os)
+  local selfpath=$(__dirname)
+  
+  if [[ -z "$name" ]]; then
+    echo "Error - get_path needs a path name!"
+    exit
+  fi
+
+  if [[ ! -d "$root" ]]; then
+    echo "Error - get_path needs the path to Steam!"
+    exit
+  fi
+
+  isuserdata="$(echo "$name" | awk '$1~/localconfig|sharedconfig|shortcuts/ {print 1}')"
+
+  if [[ -z "$isuserdata" ]]; then
+    isuserdata=0
+  fi
+
+  if [[ "$isuserdata" -ne 0 && -z "$accountid" ]]; then
+    echo "Error - get_path need a user's Steam3.accountID!"
+    exit
+  fi
+
+  local path=$(awk '$1== name {
+    print $2
+  }' name="$name" < "$selfpath/$platform.txt")
+  if [[ -z "$path" ]]; then
+    echo "Error - Unknown path \"$1\""
+    exit
+  fi
+
+  path="$(echo "$path" |
+    sed -e 's_root_'"${root}"'_' \
+      -e 's_library_'"${root}"'_' \
+      -e 's_accountid_'"$accountid"'_'
+  )"
+
+  if [[ "$name" == "steamapps" ]]; then
+    path="$(find "$path" -name "appmanifest*")"
+  fi
+  
+  if [[ ! -e "$path" ]]; then
+    echo "\"$path\" does not exist"
+    exit
+  fi
+
+  echo "$path"
+}

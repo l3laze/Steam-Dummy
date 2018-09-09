@@ -1,0 +1,8 @@
+config root/config/config.vdf
+libraryfolders root/steamapps/libraryfolders.vdf
+localconfig root/userdata/aid/config/localconfig.vdf
+loginusers root/config/loginusers.vdf
+sharedconfig root/userdata/7/remote/sharedconfig.vdf
+shortcuts root/userdata/aid/config/shortcuts.vdf
+steamapps library/appmanifest_.*.acf
+app library/appmanifest_appid.acf

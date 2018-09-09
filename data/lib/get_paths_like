@@ -1,0 +1,15 @@
+. "./lib/abs_path"
+. "./lib/get_path_arg_check"
+
+function get_paths_like () {
+  get_path_arg_check "$@"
+  
+  if [[ $? -ne 0 ]]; then
+    return $?
+  fi
+
+  local path="$(abs_path "$2")"
+  echo "$(find "$path" -name "$1")"
+  
+  return 0
+}

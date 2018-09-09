@@ -1,0 +1,26 @@
+. "./lib/abs_path"
+
+function get_path_arg_check () {
+  local err=""
+
+  if [[ -z "$1" ]]; then
+    err="Need a string or regex to search for."
+  fi
+
+  if [[ -z "$2" ]]; then
+    err="Need at least one path to search in."
+  else
+    local path="$(abs_path $2)"
+
+    if [[ ! -d "$path" ]]; then
+      err="\"$path\" is not a directory."
+    fi
+  fi
+
+  if [[ -n "$err" ]]; then
+    echo "ERROR: $err"
+    return 1
+  fi
+
+  return 0
+}

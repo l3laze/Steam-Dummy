@@ -1,0 +1,24 @@
+function backup_file () {
+  local real="$1"
+  local dest="$2"
+  local clean="$3"
+  local key
+  local val
+  local line
+
+  printf "" > "$dest"
+
+  while IFS='' read -r line || [[ -n "$line" ]]; do
+    if [[ "$key" == "{" || "$key" == "}" || -n "$key" ]]; then
+      val=""
+    else
+      val="$(awk '$1 == key {print $2}' key="$key" < "$real")"
+    fi
+    
+    if [[ "$val" != "{" && "$val" != "}" && ! -n "$val" ]]; then
+      echo -e "$key\t\t$val" >> "$dest"
+    else
+      echo "$line" >> "$dest"
+    fi
+  done < "$clean"
+}

@@ -1,0 +1,13 @@
+function get_os () {
+  case "$OSTYPE" in
+    linux*  )
+      echo "Linux"
+    ;;
+    darwin* )
+      echo "Mac"
+    ;;
+    * )
+      echo "This platform is not supported"
+      exit
+  esac
+}

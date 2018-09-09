@@ -1,0 +1,9 @@
+function abs_path {
+  local path="$(realpath "$1")"
+
+  if [[ "${path:-1:1}" == "/" ]]; then
+    path="${path:-1:1}"
+  fi
+  
+  echo "$(cd "$(dirname "$path")" &>/dev/null && printf "%s/%s" "$PWD" "$(basename "$path")")"
+}
